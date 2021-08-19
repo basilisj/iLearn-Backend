@@ -11,4 +11,5 @@ public interface DiscussionRepo extends JpaRepository<Discussion, Integer> {
 
 	public List<Discussion> findAll();
 	public Discussion findByUser(User u);
+	public List<Discussion> findPostByUserOrderById(User user); 
 }

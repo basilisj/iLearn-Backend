@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,27 @@ public class DiscussionService {
 	public Discussion getDiscussionById(int postId) {
 		return dDao.findById(postId).get();
 	}
+	
+    public List<Discussion> getAllPost(){
+    	   return dDao.findAll();
+    	}
+	/*
+
+
+public List<Post> getAllPost(){
+   return postRepository.findAllByOrderByIdDesc();
+}
+
+
+	
+    public List<Discussion> getPostsOfUser(Integer userId){
+    	List<Discussion> dissList= dDao.findPostByUserOrderById(dDao.findById(userId));
+    	List<Discussion> postDtoList= new ArrayList<>();
+    		for (Discussion post :dissList) {
+       			postDtoList.add(modelMapper.map(post,PostDto.class));
+   			}
+   		return postDtoList;
+	}
+ */
 	
 }

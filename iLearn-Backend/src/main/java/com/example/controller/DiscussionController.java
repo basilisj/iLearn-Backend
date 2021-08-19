@@ -1,10 +1,14 @@
 package com.example.controller;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +24,7 @@ import lombok.NoArgsConstructor;
 
 @RestController
 @RequestMapping(value="/discussion")
+@CrossOrigin(origins = "*")
 @AllArgsConstructor(onConstructor=@__(@Autowired))
 @NoArgsConstructor
 public class DiscussionController {
@@ -29,7 +34,7 @@ public class DiscussionController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<String> createDiscussion(@RequestBody LinkedHashMap<String, String> discussion){
-		User u = uServ.getUserById(Integer.parseInt(discussion.get("userId")));
+		User u = uServ.getUserById(Integer.parseInt(discussion.get("user_id")));
 		Discussion d = new Discussion(discussion.get("content"), u);
 		pServ.createDiscussion(d);
 		return new ResponseEntity<String>("Discussion created successfully", HttpStatus.CREATED);
@@ -37,9 +42,16 @@ public class DiscussionController {
 	
 	@PostMapping("/like")
 	public ResponseEntity<Discussion> likeDiscussion(@RequestBody LinkedHashMap<String, String> post){
-		User u = uServ.getUserById(Integer.parseInt(post.get("userId")));
-		pServ.likeDiscussion(Integer.parseInt(post.get("dissId")), u);
-		return new ResponseEntity<>(pServ.getDiscussionById(Integer.parseInt(post.get("postId"))), HttpStatus.OK);
+		User u = uServ.getUserById(Integer.parseInt(post.get("user_id")));
+		pServ.likeDiscussion(Integer.parseInt(post.get("diss_id")), u);
+		return new ResponseEntity<>(pServ.getDiscussionById(Integer.parseInt(post.get("diss_id"))), HttpStatus.OK);
 	}
+    /*
+	 @GetMapping("/{user_id}/discussion")
+	    public ResponseEntity<?> getPostofUser(@PathVariable Integer userId){
+	        List<Discussion> dissList = DiscussionService.getAllPost();
+	        return ResponseEntity.ok(dissList);
+	 }*/
+
 	
 }
