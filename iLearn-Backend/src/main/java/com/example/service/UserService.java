@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.model.Discussion;
 import com.example.model.User;
 import com.example.model.UserRoles;
+import com.example.repository.DiscussionRepo;
 import com.example.repository.RolesRepo;
 import com.example.repository.UserRepo;
 
@@ -22,6 +23,7 @@ public class UserService {
 
 	private UserRepo uDao;
 	private RolesRepo rDao;
+	private DiscussionRepo dDao;
 	
 	public boolean registerUser(User user) {
 		try {
@@ -68,5 +70,9 @@ public class UserService {
 	
 	public UserRoles getRoleIdById(int id) {
 		return rDao.getById(id);
+	}
+	
+	public List<Discussion> getUserPosts(int u){
+		return dDao.findAllDissByUser(u);
 	}
 }
