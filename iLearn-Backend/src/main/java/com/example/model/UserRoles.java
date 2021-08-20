@@ -19,7 +19,6 @@ import lombok.Setter;
 import lombok.ToString;
 @Getter @Setter
 @NoArgsConstructor
-@ToString
 @Entity
 @JsonIgnoreProperties(value= {"hibernateLazyInitializer", "handler"})
 @Table(name="user_roles")
@@ -54,6 +53,12 @@ public class UserRoles {
 	public UserRoles(String userRole) {
 		super();
 		this.userRole = userRole;
+	}
+
+
+	@Override
+	public String toString() {
+		return "UserRoles [roleId=" + roleId + ", userRole=" + userRole + ", uList=" + uList.size() + "]";
 	}
 
 

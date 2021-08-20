@@ -47,5 +47,12 @@ public class Subject {
 	public Subject(String subject) {
 		this.subject = subject;
 	}
+	public Subject(String subject, List<Assignment> aType) {
+		super();
+		this.subject = subject;
+		this.aType = aType;
+	}
 
+	
+	
 }

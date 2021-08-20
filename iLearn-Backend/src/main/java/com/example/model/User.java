@@ -31,7 +31,6 @@ import lombok.ToString;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name="users")
 public class User {
@@ -56,10 +55,19 @@ public class User {
 	@Column(name="password", nullable=false)
 	private String password;
 	
-	@JsonIgnore
+	
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="role_FK", updatable=false, insertable=true)
 	private UserRoles userRoles;
+	
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="student", cascade=CascadeType.ALL)
+	private List<Assignment> assign = new ArrayList<>();
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy="grades")
+	private List<Assignment> grades = new ArrayList<>();
 	
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
 	@JsonIgnore
@@ -88,4 +96,12 @@ public class User {
 		this.email = email;
 		this.password = password;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
+				+ ", email=" + email + ", password=" + password + ", userRoles=" + userRoles + ", assign=" + assign.size()
+				+ ", grades=" + grades.size() + ", diss=" + diss.size() + ", likeDiss=" + likeDiss.size() + "]";
+	}
+	
 }
