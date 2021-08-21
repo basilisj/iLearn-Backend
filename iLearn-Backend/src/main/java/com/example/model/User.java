@@ -1,5 +1,6 @@
 package com.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +34,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 @Table(name="users")
-public class User {
+public class User implements Serializable{
 
 	@Id
 	@Column(name="user_id")
@@ -66,8 +67,8 @@ public class User {
 	private List<Assignment> assign = new ArrayList<>();
 	
 	@JsonIgnore
-	@ManyToMany(mappedBy="grades")
-	private List<Assignment> grades = new ArrayList<>();
+	@ManyToMany(mappedBy="grade")
+	private Set<Assignment> grade = new HashSet<Assignment>();
 	
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
 	@JsonIgnore
@@ -101,7 +102,7 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
 				+ ", email=" + email + ", password=" + password + ", userRoles=" + userRoles + ", assign=" + assign.size()
-				+ ", grades=" + grades.size() + ", diss=" + diss.size() + ", likeDiss=" + likeDiss.size() + "]";
+				+ ", grades=" + grade.size() + ", diss=" + diss.size() + ", likeDiss=" + likeDiss.size() + "]";
 	}
 	
 }

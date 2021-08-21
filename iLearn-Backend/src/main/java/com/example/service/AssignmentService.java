@@ -48,4 +48,10 @@ public class AssignmentService {
 		}
 		
 	}
+	public void viewGrade(int assignId, User u) {
+		Assignment a = aDao.findById(assignId).get();
+		a.getGrades().add(u);
+		
+		aDao.save(a);
+	}
 }

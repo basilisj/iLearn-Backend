@@ -1,5 +1,6 @@
 package com.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -40,9 +41,14 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name="assignment")
-public class Assignment {
+public class Assignment implements Serializable{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name="assign_id")
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -70,14 +76,14 @@ public class Assignment {
 			name="assn_grade_junction",
 			
 			
-			joinColumns= {@JoinColumn(name="assign_id")},
+			joinColumns= {@JoinColumn(name="assign_id", referencedColumnName="assign_id"), @JoinColumn(name="grade", referencedColumnName= "grade")},
 			
 			inverseJoinColumns = {
-					@JoinColumn(name="user_id")
+					@JoinColumn(name="user_id", referencedColumnName= "user_id")
 					}
 			
 			)
-		List<User> grades = new ArrayList<User>();
+		Set<User> grades = new HashSet<User>();
 
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonIgnore
@@ -108,7 +114,7 @@ public class Assignment {
 	}
 
 
-	public Assignment(String name, String content,  Subject subject, User u, User teachId) {
+	public Assignment(String name, String content, Subject subject, User u, User teachId) {
 		this.des=content;
 		this.student=u;
 		this.subject=subject;
@@ -138,11 +144,12 @@ public class Assignment {
 	}
 */
 
-	public Assignment(int assignId, String name, String content, User student, Subject subject, User teachId) {
+	public Assignment(int assignId, String name, String content, String grade,  User student, Subject subject, User teachId) {
 		super();
 		this.assignId = assignId;
 		this.name = name;
 		this.des = content;
+		this.grade=grade;
 		this.student = student;
 		this.subject = subject;
 		this.teacher=teachId;

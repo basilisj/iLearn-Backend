@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +28,12 @@ import lombok.NoArgsConstructor;
 @CrossOrigin(origins= "*")
 @AllArgsConstructor(onConstructor=@__(@Autowired))
 @NoArgsConstructor
-public class AssignmentController {
+public class AssignmentController implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private UserService uServ;
 	private AssignmentService aServ;
 	
@@ -55,5 +61,15 @@ public class AssignmentController {
 		Assignment a = new Assignment(submit.get("name"), submit.get("content"), s, u, t);
 		aServ.createAssignment(a);
 		return new ResponseEntity<String>("Assignment submitted successfully", HttpStatus.ACCEPTED);
+	}
+	@GetMapping("/all")
+	public ResponseEntity<List<Assignment>> getAll(){
+		return new ResponseEntity<>(aServ.getAllAssignments(), HttpStatus.OK);
+	}
+	@PostMapping("/viewgrades")
+	public ResponseEntity<Assignment> viewGrades(@RequestBody LinkedHashMap<String, String> grade){
+		User u = uServ.getUserById(Integer.parseInt(grade.get("userId")));
+		aServ.viewGrade(Integer.parseInt(grade.get("assignId")), u);
+		return new ResponseEntity<>(aServ.getAssignmentById(Integer.parseInt(grade.get("assignId"))), HttpStatus.OK);
 	}
 }

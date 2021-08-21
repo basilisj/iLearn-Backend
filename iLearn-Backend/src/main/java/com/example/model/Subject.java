@@ -1,5 +1,6 @@
 package com.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -24,8 +25,12 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name="subject")
-public class Subject {
+public class Subject implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name="subject_id")
 	private int subjectId;
