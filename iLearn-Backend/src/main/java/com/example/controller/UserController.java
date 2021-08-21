@@ -18,6 +18,7 @@ import com.example.model.Discussion;
 import com.example.model.User;
 import com.example.model.UserRoles;
 import com.example.service.DiscussionService;
+import com.example.service.EmailService;
 import com.example.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ import lombok.NoArgsConstructor;
 public class UserController {
 
 	private UserService uServ;
+	private EmailService eServ;
 	
 	@PostMapping("/register")
 	public ResponseEntity<String> createUser(@RequestBody LinkedHashMap<String, String> user){
@@ -58,9 +60,19 @@ public class UserController {
 	
 	@GetMapping("/discussion/{id}")
 	 public ResponseEntity<List<Discussion>> getUserPosts(@PathVariable("id") int userId){
-	        System.out.println(userId);
 	        User u = uServ.getUserById(userId);
 	        return new ResponseEntity<>(u.getDiss(), HttpStatus.OK);
-	        }
+	}
+	
+	
+	@GetMapping("/mail")
+	public ResponseEntity<String> invoice(@RequestBody LinkedHashMap<String,String> userId) {
+		User u = uServ.getUserById(Integer.parseInt(userId.get("id")));
+		if (u==null) {
+			return new ResponseEntity<String>("User Not Found", HttpStatus.NOT_FOUND);
+		}
+		eServ.sendTestMail(Integer.getInteger(userId.get("id")));
+		return new ResponseEntity<String>("Mail Has been Sent", HttpStatus.OK);
+	}
 
 }
