@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.model.Discussion;
 import com.example.model.User;
 import com.example.service.DiscussionService;
+import com.example.service.EmailService;
 import com.example.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -25,12 +26,18 @@ import lombok.NoArgsConstructor;
 public class DiscussionController {
 	private UserService uServ;
 	private DiscussionService pServ;
+	private EmailService eServ;
 	
 	@PostMapping("/create")
 	public ResponseEntity<String> createDiscussion(@RequestBody LinkedHashMap<String, String> discussion){
 		User u = uServ.getUserById(Integer.parseInt(discussion.get("userId")));
 		Discussion d = new Discussion(discussion.get("content"), u);
 		pServ.createDiscussion(d);
+	      try {
+	    	  eServ.sendEmail(u);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		return new ResponseEntity<String>("Discussion created successfully", HttpStatus.CREATED);
 	}
 	

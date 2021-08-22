@@ -6,18 +6,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.model.Assignment;
 import com.example.model.Discussion;
 import com.example.model.User;
 import com.example.model.UserRoles;
+import com.example.service.EmailService;
 import com.example.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +36,7 @@ import lombok.NoArgsConstructor;
 public class UserController {
 
 	private UserService uServ;
+	private EmailService eServ;
 	
 	@PostMapping("/register")
 	public ResponseEntity<String> createUser(@RequestBody LinkedHashMap<String, String> user){
@@ -62,16 +66,32 @@ public class UserController {
 		uServ.updateUser(Integer.parseInt(user.get("userId")),user.get("password"));
 		return new ResponseEntity<>(uServ.getUserById(Integer.parseInt(user.get("userId"))), HttpStatus.OK);
 	}
+	
 	@GetMapping("/discussion/{id}")
 	 public ResponseEntity<List<Discussion>> getUserPosts(@PathVariable("id") int userId){
 	        System.out.println(userId);
 	        User u = uServ.getUserById(userId);
 	        return new ResponseEntity<>(u.getDiss(), HttpStatus.OK);
 	        }
+	
 	@GetMapping("/assignment/{id}")
 	 public ResponseEntity<List<Assignment>> getUserAssignment(@PathVariable("id") int userId){
 	        System.out.println(userId);
 	        User u = uServ.getUserById(userId);
 	        return new ResponseEntity<>(u.getAssign(), HttpStatus.OK);
 	        }
+	
+	@GetMapping(value = "/{email}")
+    public @ResponseBody ResponseEntity<String> sendSimpleEmail(@PathVariable("email") String email) {
+
+        try {
+            eServ.sendSimpleEmail(email, "Welcome", "This is a welcome email for your!!");
+        } catch (MailException mailException) {
+           // LOG.error("Error while sending out email..{}", mailException.getStackTrace());
+            return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>("Please check your inbox", HttpStatus.OK);
+    }
+	
 }
