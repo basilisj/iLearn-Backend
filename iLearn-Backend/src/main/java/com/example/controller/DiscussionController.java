@@ -37,11 +37,5 @@ public class DiscussionController {
 		return new ResponseEntity<String>("Discussion created successfully", HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/like")
-	public ResponseEntity<Discussion> likeDiscussion(@RequestBody LinkedHashMap<String, String> post){
-		User u = uServ.getUserById(Integer.parseInt(post.get("user_id")));
-		dServ.likeDiscussion(Integer.parseInt(post.get("diss_id")), u);
-		return new ResponseEntity<>(dServ.getDiscussionById(Integer.parseInt(post.get("diss_id"))), HttpStatus.OK);
-	}
 
 }

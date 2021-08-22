@@ -64,15 +64,15 @@ public class UserController {
 	        return new ResponseEntity<>(u.getDiss(), HttpStatus.OK);
 	}
 	
-	
+	/*
 	@GetMapping("/mail")
 	public ResponseEntity<String> invoice(@RequestBody LinkedHashMap<String,String> userId) {
 		User u = uServ.getUserById(Integer.parseInt(userId.get("id")));
 		if (u==null) {
 			return new ResponseEntity<String>("User Not Found", HttpStatus.NOT_FOUND);
 		}
-		eServ.sendTestMail(Integer.getInteger(userId.get("id")));
+		eServ.sendMail(Integer.getInteger(userId.get("id")));
 		return new ResponseEntity<String>("Mail Has been Sent", HttpStatus.OK);
-	}
+	}*/
 
 }

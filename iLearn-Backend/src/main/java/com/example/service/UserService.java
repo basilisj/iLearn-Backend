@@ -2,10 +2,14 @@ package com.example.service;
 
 import java.util.List;
 
+import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.model.Discussion;
+import com.example.model.Email;
 import com.example.model.User;
 import com.example.model.UserRoles;
 import com.example.repository.DiscussionRepo;
@@ -75,4 +79,6 @@ public class UserService {
 	public List<Discussion> getUserPosts(int u){
 		return dDao.findAllDissByUser(u);
 	}
+	
+
 }
