@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.model.Assignment;
 import com.example.model.Discussion;
 import com.example.model.User;
 import com.example.model.UserRoles;
@@ -68,5 +69,16 @@ public class UserService {
 	
 	public UserRoles getRoleIdById(int id) {
 		return rDao.getById(id);
+	}
+	public User updateUser(int userId, String password ) {
+			User a = uDao.findById(userId).get();
+			a.setPassword(password);
+			uDao.save(a);
+			if(a == null) {
+				return null;
+				
+			}else {
+				return a;
+			}
 	}
 }
