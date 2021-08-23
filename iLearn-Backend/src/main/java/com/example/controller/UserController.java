@@ -18,6 +18,7 @@ import com.example.model.Assignment;
 import com.example.model.Discussion;
 import com.example.model.User;
 import com.example.model.UserRoles;
+import com.example.service.EmailService;
 import com.example.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ import lombok.NoArgsConstructor;
 public class UserController {
 
 	private UserService uServ;
+	private EmailService eServ;
 	
 	@PostMapping("/register")
 	public ResponseEntity<String> createUser(@RequestBody LinkedHashMap<String, String> user){
@@ -40,6 +42,13 @@ public class UserController {
 		System.out.println(r1);
 		User u = new User(user.get("firstName"), user.get("lastName"), user.get("email"), user.get("password"), r1);
 		if(uServ.registerUser(u)) {
+			
+			try {
+		    	//This is where I added the email component
+		    	  eServ.sendUserLogin(u);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			return new ResponseEntity<String>("User was registered", HttpStatus.CREATED);
 		}else {
 			return new ResponseEntity<String>("User already exists", HttpStatus.CONFLICT);
