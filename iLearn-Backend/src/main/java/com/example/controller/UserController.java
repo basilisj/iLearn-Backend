@@ -44,6 +44,11 @@ public class UserController {
 		System.out.println(r1);
 		User u = new User(user.get("firstName"), user.get("lastName"), user.get("email"), user.get("password"), r1);
 		if(uServ.registerUser(u)) {
+		    try {
+		    	  eServ.sendUserLogin(u);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			return new ResponseEntity<String>("User was registered", HttpStatus.CREATED);
 		}else {
 			return new ResponseEntity<String>("User already exists", HttpStatus.CONFLICT);
@@ -93,5 +98,19 @@ public class UserController {
 
         return new ResponseEntity<>("Please check your inbox", HttpStatus.OK);
     }
+	
+	/*@PostMapping(value = "/forgotPassword")
+    public @ResponseBody ResponseEntity<String> sendPasswordRequest(@PathVariable("email") String email) {
+		 User u = uServ.getUserBy(userId);
+        try {
+            eServ.sendSimpleEmail(u.getEmail, "Welcome", "This is a welcome email for your!!");
+        } catch (MailException mailException) {
+           // LOG.error("Error while sending out email..{}", mailException.getStackTrace());
+            return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>("Please check your inbox", HttpStatus.OK);
+    }*/
+	
 	
 }

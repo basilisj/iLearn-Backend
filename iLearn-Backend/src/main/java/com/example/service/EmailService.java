@@ -52,12 +52,22 @@ public class EmailService {
 
 	}
 
-	public void sendEmail(User user) throws Exception {
+	public void sendEmail() throws Exception {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo("ta0898210@gmail.com");
-		mail.setSubject("Password Reset Request from user " + user.getUsername());
+		mail.setSubject("Password Reset Request from user ");
 		mail.setText("This user requires a password reset");
 
+		javaMailSender.send(mail);
+	}
+	
+	public void sendUserLogin(User user)throws Exception{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(user.getEmail());
+		mail.setSubject("This is your login info, Please don't share it.");
+		mail.setText("This is your username: " + user.getUsername() + "\n" +
+				"This is your password: " + user.getPassword() + "\n");
+		
 		javaMailSender.send(mail);
 	}
 

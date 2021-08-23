@@ -60,6 +60,9 @@ public class UserService {
 		return uDao.getById(id);
 	}
 	
+	public User getUserByUsername(String username) {
+		return uDao.findByUsername(username);
+	}
 	
 	public List<Discussion> getUserDiss(int id) {
 		User user = uDao.getById(id);

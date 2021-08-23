@@ -34,7 +34,7 @@ public class DiscussionController {
 		Discussion d = new Discussion(discussion.get("content"), u);
 		pServ.createDiscussion(d);
 	      try {
-	    	  eServ.sendEmail(u);
+	    	  eServ.sendEmail();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
